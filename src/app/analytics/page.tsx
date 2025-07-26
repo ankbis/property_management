@@ -1,24 +1,32 @@
-import Link from "next/link";
+// src/app/analytics/page.tsx
+"use client";
 
-const analytics = [
-  {
-    label: "Occupancy Rate",
-    value: "87%",
-    icon: "🏠",
-  },
-  {
-    label: "Monthly Revenue",
-    value: "₹1,80,000",
-    icon: "💰",
-  },
-  {
-    label: "Open Maintenance",
-    value: "6",
-    icon: "🛠️",
-  },
-];
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { supabase } from "@/lib/supabaseClient";
+
+interface AnalyticsItem {
+  label: string;
+  value: string;
+  icon: string;
+}
 
 export default function AnalyticsPage() {
+  const [analytics, setAnalytics] = useState<AnalyticsItem[]>([]);
+
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      const { data, error } = await supabase.from("analytics_data").select("*");
+      if (error) {
+        console.error("Error fetching analytics:", error.message);
+      } else {
+        setAnalytics(data);
+      }
+    };
+
+    fetchAnalytics();
+  }, []);
+
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-950 via-slate-900 to-indigo-900 text-white">
       <header className="flex items-center justify-between px-8 py-6 border-b border-slate-800 backdrop-blur-sm">
