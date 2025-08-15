@@ -1,15 +1,11 @@
 'use client';
 
-import { User, createClient } from '@supabase/supabase-js';
+import { User } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import Link from 'next/link';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { supabase } from '@/lib/supabaseClient';
 
 export default function Header() {
   const router = useRouter();
